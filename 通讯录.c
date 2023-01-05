@@ -1,7 +1,8 @@
 #define  _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<string.h>
-#define max 1000
+#include<stdlib.h>
+#define Max 1000
 struct stu {
 	char name[20];
 	int age;
@@ -10,7 +11,7 @@ struct stu {
 	char addr[20];
 };
 struct con {
-	struct stu a[max];
+	struct stu a[Max];
 	int sizet;
 };
 void mune()
@@ -19,9 +20,9 @@ void mune()
 	printf("**0-----退出程序*******\n");
 	printf("**1-----添加信息*******\n");
 	printf("**2-----打印信息*******\n");
-	printf("**3-----删除信息*******\n");
-	printf("**4-----查找信息*******\n");
-	printf("**5-----修改信息*******\n");
+	printf("**3-----查找信息*******\n");
+	printf("**4-----修改信息*******\n"); 
+	printf("**5-----删除信息*******\n");
 	printf("***********************\n");
 	printf("请选择---->\n");
 }
@@ -32,7 +33,7 @@ void initcon(struct con* p)
 }
 void add(struct con* p)
 {
-	if (p->sizet > max)
+	if (p->sizet > Max)
 	{
 		printf("通讯录已满\n");
 	}
@@ -59,10 +60,89 @@ void print(struct con* p)
 	else {
 		printf("%-14s\t%-4s\t%-2s\t%-12s\t%-14s\n", "姓名", "年龄", "性别", "电话", "地址");
 		for (i = 0; i < p->sizet; i++)
+			printf("%-14s\t%-4d\t%-2s\t%-12s\t%-14s\n", p->a[i].name, p->a[i].age, p->a[i].sex, p->a[i].num, p->a[i].addr);
+	}
+}
+int fun(struct con* p, char* name)
+{
+	int i;
+	for (i = 0; i < p->sizet; i++)
+	{
+		if (strcmp(p->a[i].name, name) == 0)
+		{
+			return i;
+		}
+	}	
+	return -1;
+}
+void find(struct con* p)
+{
+	char name[20];
+	printf("请输入你要找的名字\n");
+	scanf("%s", name);
+	int i = fun(p, name);
+	if (i==-1)
+	{
+		printf("通讯录中没有这个人\n");	
+	}
+	else
+	{
+		printf("找到了\n");
+		printf("%-14s\t%-4s\t%-2s\t%-12s\t%-14s\n", "姓名", "年龄", "性别", "电话", "地址");
 		printf("%-14s\t%-4d\t%-2s\t%-12s\t%-14s\n", p->a[i].name, p->a[i].age, p->a[i].sex, p->a[i].num, p->a[i].addr);
 	}
+}
+void alter(struct con* p)
+{
+	char name[20];
+	printf("请输入你要修改的人的名字\n");
+	scanf("%s", name);
+	int i = fun(p, name);
+	if (i == -1)
+	{
+		printf("通讯录中没有这个人\n");
 
+	}
+	else
+	{
+		printf("找到了\n");
+		printf("请修改\n");
+		printf("请输入姓名：\n");
+		scanf("%s", p->a[i].name);
+		printf("请输入年龄：\n");
+		scanf("%d", &(p->a[i].age));
+		printf("请输入性别：\n");
+		scanf("%s", p->a[i].sex);
+		printf("请输入电话：\n");
+		scanf("%s", p->a[i].num);
+		printf("请输入地址：\n");
+		scanf("%s", p->a[i].addr);
+		printf("修改成功\n");
+	}
+}
+void dele(struct con* p)
+{
+	char name[20];
+	printf("请输入你要删除的人的名字\n");
+	scanf("%s", name);
+	int i = fun(p, name);
+	if (i == -1)
+	{
+		printf("通讯录中没有这个人\n");
 
+	}
+	else
+	{
+		printf("找到了\n");
+		printf("请删除\n");
+		int j = i;
+		for (j = i; j < p->sizet - 1; j++)
+		{
+			p->a[j] = p->a[j + 1];
+		}
+		p->sizet--;
+		printf("删除成功\n");
+	}
 }
 int main()
 {
@@ -70,20 +150,20 @@ int main()
 	struct con stu;
 	initcon(&stu);
 	do
-	{
+	{	
 		mune();
 		scanf("%d", &input);
+		/*system("cls");*/
 		switch (input)
 		{
 		case 0:printf("退出程序\n"); break;
-		case 1:add(&stu); break;
+		case 1:add(&stu); /*system("cls");*/ break;
 		case 2:print(&stu); break;
-		case 3:
-		case 4:
-		case 5:
+		case 3:find(&stu); break;
+		case 4:alter(&stu); break;
+		case 5:dele(&stu); break;
 		default:printf("选择错误，请重新选择\n");
-		}
-
+		}		
 	} while (input);
 	return 0;
 }
