@@ -2,7 +2,8 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#define Max 1000
+#define MAX 2
+
 struct stu {
 	char name[20];
 	int age;
@@ -11,8 +12,10 @@ struct stu {
 	char addr[20];
 };
 struct con {
-	struct stu a[Max];
 	int sizet;
+	int cap;
+	struct stu *a;
+
 };
 void mune()
 {
@@ -28,12 +31,49 @@ void mune()
 }
 void initcon(struct con* p)
 {
-	memset(p->a, 0, sizeof(p->a));
+	p->a = (struct stu*)malloc(MAX * sizeof(struct stu));
+	if (p->a == NULL)
+	{
+		return;
+	}
+	p->cap = MAX;
 	p->sizet = 0;
+	/*memset(p->a, 0, sizeof(p->a));
+	p->sizet = 0;*/
+}
+void check(struct con* p)
+{
+	if (p->sizet == p->cap)
+	{
+		struct stu* ps = (struct stu*)realloc(p->a ,(MAX*2)*sizeof(struct stu));
+		if (ps != NULL)
+		{
+			p ->a = ps;
+			p->cap *= 2;
+			printf("增容成功\n");
+		}
+		else
+		{
+			printf("增容失败\n");
+		}
+	}
 }
 void add(struct con* p)
 {
-	if (p->sizet > Max)
+	check(p);
+	printf("请输入姓名：\n");
+	scanf("%s", p->a[p->sizet].name);
+	printf("请输入年龄：\n");
+	scanf("%d", &(p->a[p->sizet].age));
+	printf("请输入性别：\n");
+	scanf("%s", p->a[p->sizet].sex);
+	printf("请输入电话：\n");
+	scanf("%s", p->a[p->sizet].num);
+	printf("请输入地址：\n");
+	scanf("%s", p->a[p->sizet].addr);
+	p->sizet++;
+	printf("添加成功\n");
+	/*if (p->sizet > MAX)
 	{
 		printf("通讯录已满\n");
 	}
@@ -50,7 +90,7 @@ void add(struct con* p)
 		printf("请输入地址：\n");
 		scanf("%s", p->a[p->sizet].addr);
 		p->sizet++;
-	}
+	}*/
 }
 void print(struct con* p)
 {
@@ -144,6 +184,11 @@ void dele(struct con* p)
 		printf("删除成功\n");
 	}
 }
+void xiaohui(struct con* p)
+{
+	free(p->a );
+	p ->a = NULL;
+}
 int main()
 {
 	int input;
@@ -156,7 +201,7 @@ int main()
 		/*system("cls");*/
 		switch (input)
 		{
-		case 0:printf("退出程序\n"); break;
+		case 0:xiaohui(&stu); printf("退出程序\n"); break;
 		case 1:add(&stu); /*system("cls");*/ break;
 		case 2:print(&stu); break;
 		case 3:find(&stu); break;
