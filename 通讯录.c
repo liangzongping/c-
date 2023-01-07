@@ -2,8 +2,9 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<errno.h>
 #define MAX 2
-
+void check(struct con* p);
 struct stu {
 	char name[20];
 	int age;
@@ -26,8 +27,27 @@ void mune()
 	printf("**3-----查找信息*******\n");
 	printf("**4-----修改信息*******\n"); 
 	printf("**5-----删除信息*******\n");
+	printf("**6-----清除通讯录*****\n");
 	printf("***********************\n");
 	printf("请选择---->\n");
+}
+void load(struct con* p)
+{
+	struct stu t = {0};
+	FILE* pf = fopen("test.dat", "rb");
+	if (pf == NULL)
+	{
+		printf("%s", strerror(errno));
+		return;
+	}
+	while (fread(&t, sizeof(struct stu), 1, pf))
+	{
+		check(p);
+		p->a[p->sizet] = t;
+		p->sizet++;
+	}
+	fclose(pf);
+	pf = NULL;
 }
 void initcon(struct con* p)
 {
@@ -38,6 +58,7 @@ void initcon(struct con* p)
 	}
 	p->cap = MAX;
 	p->sizet = 0;
+	load(p);
 	/*memset(p->a, 0, sizeof(p->a));
 	p->sizet = 0;*/
 }
@@ -184,29 +205,58 @@ void dele(struct con* p)
 		printf("删除成功\n");
 	}
 }
+void clean(struct con* p)
+{
+	int i = 0;
+	while (p->sizet)
+	{
+		for (i = 0; i < p->sizet; i++)
+		{
+			p->a[i] = p->a[i + 1];
+		}
+		p->sizet--;
+	}
+}
 void xiaohui(struct con* p)
 {
 	free(p->a );
 	p ->a = NULL;
 }
+void save(struct con* p)
+{
+	FILE* pf = fopen("test.dat", "wb");
+	if (pf == NULL)
+	{
+		printf("%s", strerror(errno));
+		return;
+	}
+	int i;
+	for (i = 0; i < p->sizet; i++)
+		fwrite(&(p->a[i]), sizeof(struct stu), 1, pf);
+	fclose(pf);
+	pf = NULL;
+}
 int main()
 {
 	int input;
+	
 	struct con stu;
 	initcon(&stu);
 	do
 	{	
+		
 		mune();
 		scanf("%d", &input);
 		/*system("cls");*/
 		switch (input)
 		{
-		case 0:xiaohui(&stu); printf("退出程序\n"); break;
+		case 0:save(&stu); xiaohui(&stu); printf("退出程序\n"); break;
 		case 1:add(&stu); /*system("cls");*/ break;
 		case 2:print(&stu); break;
 		case 3:find(&stu); break;
 		case 4:alter(&stu); break;
 		case 5:dele(&stu); break;
+		case 6:clean(&stu); printf("清除成功\n"); break;
 		default:printf("选择错误，请重新选择\n");
 		}		
 	} while (input);
