@@ -130,11 +130,66 @@ struct s {
 //	printf("%s", b);
 //	return 0;
 //}
+//int main()
+//{
+//	struct s a = { 0 };
+//	char b[1000] = "100 3.14 liang";
+//	sscanf(b, "%d %f %s", &(a.a), &(a.b), &(a.c));//从字符串输出
+//	printf("%d %f %s", a.a, a.b, a.c);
+//	return 0;
+//}
+//int main()
+//{
+//	/*struct s a = { 100,3.14,"liang" };
+//	FILE* p = fopen("test.txt", "wb");
+//	if (p == NULL)
+//	{
+//		return 0;
+//	}
+//	fwrite(&a, sizeof(struct s), 1, p);
+//	fclose(p);
+//	p = NULL;*/
+//	struct s a = {0};
+//	FILE* p = fopen("test.txt", "rb");
+//	if (p == NULL)
+//	{
+//		return 0;
+//	}
+//	fread(&a, sizeof(struct s), 1, p);
+//	printf("%d %f %s", a.a, a.b, a.c);
+//	fclose(p);
+//	p = NULL;
+//	return 0;
+//}
+//int main()
+//{
+//	FILE* p = fopen("test.txt", "r");
+//		if (p == NULL)
+//		{
+//			return 0;
+//		}
+//	/*fseek(p, 4, SEEK_CUR);
+//	fseek(p, 1, SEEK_CUR);*/
+//	fgetc(p);
+//	int pos = ftell(p);//返回偏移量
+//	printf("%d", pos);//abcdef//SEEK_CUR当前位置------SEEK_END（f后面）文件末尾--------SEEE_SET起始位置
+//	fclose(p);
+//	p = NULL;
+//	return 0;
+//}
 int main()
 {
-	struct s a = { 0 };
-	char b[1000] = "100 3.14 liang";
-	sscanf(b, "%d %f %s", &(a.a), &(a.b), &(a.c));//从字符串输出
-	printf("%d %f %s", a.a, a.b, a.c);
+	FILE* p = fopen("test.txt", "r");
+		if (p == NULL)
+		{
+			return 0;
+		}
+		int ch = fgetc(p);
+		printf("%c", ch);
+		rewind(p);
+		ch = fgetc(p);
+		printf("%c", ch);
+		fclose(p);
+	p = NULL;
 	return 0;
 }
