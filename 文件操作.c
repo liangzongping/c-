@@ -177,19 +177,44 @@ struct s {
 //	p = NULL;
 //	return 0;
 //}
+//int main()
+//{
+//	FILE* p = fopen("test.txt", "r");
+//		if (p == NULL)
+//		{
+//			return 0;
+//		}
+//		int ch = fgetc(p);
+//		printf("%c", ch);
+//		rewind(p);
+//		ch = fgetc(p);
+//		printf("%c", ch);
+//		fclose(p);
+//	p = NULL;
+//	return 0;
+//}
 int main()
 {
 	FILE* p = fopen("test.txt", "r");
-		if (p == NULL)
-		{
-			return 0;
-		}
-		int ch = fgetc(p);
-		printf("%c", ch);
-		rewind(p);
-		ch = fgetc(p);
-		printf("%c", ch);
-		fclose(p);
+	if (p == NULL)
+	{
+		perror("文件读取失败");
+		return 0;
+	}
+	int ch;
+	while ((ch = fgetc(p))!=EOF )
+	{
+		putchar(ch);
+	}
+	if (ferror(p))
+	{
+		printf("错误结束\n");
+	}
+	else if (feof(p))
+	{
+		printf("文件尾结束\n");
+	}
+	fclose(p);
 	p = NULL;
 	return 0;
 }
