@@ -1,23 +1,42 @@
 #include"SL.h"
-void test()
+int main()
 {
 	STU a;
 	SeqlistInit(&a);
-	int i;
-	for(i=0;i<10;i++)
-	SeqlistPush(&a, i);
-	/*SeqlistPush(&a, 2);
-	SeqlistPush(&a, 3);
-	SeqlistPush(&a, 4);*/
-	SeqlistpushFront(&a, 10);
-	SeqlistpushFront(&a, 20);
-	SeqlistpushFront(&a, 30);
-	SeqlistpushFront(&a, 40);
-	Seqlistprint(&a);
-	Seqlistdestory(&a);
-}
-int main()
-{
-	test();
+	int x;
+	int input;
+	do
+	{
+		
+		menu();
+		printf("请选择->\n");
+		scanf("%d", &input);
+		switch (input)
+		{
+		case 0:Seqlistdestory(&a); printf("退出程序\n"); break;
+		case 1:printf("请插入数据（-1为结束输入）\n");
+			scanf("%d", &x);
+			while (x != -1)
+			{
+				SeqlistpushFront(&a, x);
+				scanf("%d", &x);
+			}break;
+		case 2:printf("请插入数据（-1为结束输入）\n");
+			scanf("%d", &x);
+			while (x != -1)
+			{
+				SeqlistPush(&a, x);
+				scanf("%d", &x);
+			}break;
+		case 3: SeqlistDeleFront(&a); break;
+		case 4:	SeqlistDeleback(&a); break;
+		case 5:printf("请输入在第几个位置插入\n");
+			scanf("%d", &x); SeqlistInert(&a, x); break;
+		case 6:printf("请输入要删除对象的位置\n"); 
+			scanf("%d", &x); SeqlistInsertDele(&a, 1); break;
+		case 7:Seqlistprint(&a); break;
+		}
+
+	} while (input);
 	return 0;
 }

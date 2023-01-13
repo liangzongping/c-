@@ -3,7 +3,7 @@
 #include<string.h>
 #include<errno.h>
 #include<stdlib.h>
-
+#include<assert.h>
 typedef struct s {
 	int* a;
 	int size;
@@ -15,3 +15,8 @@ void Seqlistprint(STU* p);
 void Seqlistdestory(STU* p);
 void Seqlistcheckcapacity(STU* p);
 void SeqlistpushFront(STU* p, int x);
+void SeqlistDeleback(STU* P);
+void SeqlistDeleFront(STU* p);
+void SeqlistInsertDele(STU* p, int x);
+void SeqlistInert(STU* p,int x);
+void menu();
